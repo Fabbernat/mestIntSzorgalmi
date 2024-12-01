@@ -5,4 +5,4 @@ Pythonban oldottam meg a szorgalmit.
 2. Adjuk meg inputként a .1 Node osztályból a teljes fa felépíthető.Plotolni lehet a futási időt a [ ] libraryval.
 
 1 Node osztályból a teljes fa felépíthető.
-Plotolni lehet a futási időt a [ ] beépített libraryval.
+Plotolni lehet a futási időt a matplotlib beépített python libraryval.

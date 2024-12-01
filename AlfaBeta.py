@@ -24,5 +24,4 @@ def MinErtek(n, alfa, beta):
         if alfa >= min:
             return min
         beta = min(min, beta)
-
     return min
