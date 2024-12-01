@@ -46,10 +46,10 @@ def min_value(node):
     if not node.children:  # Levélcsúcs
         return node.value
 
-    # Handle None values in children
+    # Kezeli a None értékeket a gyermek csomópontokban
     valid_children_values = [max_value(child) for child in node.children if
                              child is not None and max_value(child) is not None]
-    if not valid_children_values:  # If all children are None or have None values, return None
+    if not valid_children_values:  # Ha minden gyermek None, vagy None értékkel tér vissza, akkor None a visszatérési érték
         return None
     return min(valid_children_values)
 
@@ -59,18 +59,45 @@ def max_value(node):
     if not node.children:  # Levélcsúcs
         return node.value
 
-    # Handle None values in children
+    # Kezeli a None értékeket a gyermek csomópontokban
     valid_children_values = [min_value(child) for child in node.children if
                              child is not None and min_value(child) is not None]
-    if not valid_children_values:  # If all children are None or have None values, return None
+    if not valid_children_values:  # Ha minden gyermek None, vagy None értékkel tér vissza, akkor None a visszatérési érték
         return None
     return max(valid_children_values)
 
 
 # Futási idő mérése és plottolása
 def time_plot():
+    # Példa fákat generálunk
+    example_trees = [
+        [3, 5, 6, "x", "x", 1, 4],
+        [1, 2, 3, 4, 5, "x", "x", "x", "x", 6, 7],
+        [10, 20, "x", 30, 40, 50, "x", "x", "x", "x", 60, 70, 80],
+    ]
+
     times = []
-    return times
+
+    for tree_values in example_trees:
+        # Építsük meg a fát
+        values = [int(x) if x != "x" else None for x in tree_values]
+        root = build_tree(values)
+
+        # Mérjük a futási időt
+        start_time = time.time()
+        max_profit = max_value(root)
+        elapsed_time = time.time() - start_time
+        times.append(elapsed_time)
+
+        print(f"Fa: {tree_values}")
+        print(f"Maximális nyereség: {max_profit}, Futási idő: {elapsed_time:.9f} sec")
+
+    # Futási idő grafikon
+    plt.plot(range(1, len(times) + 1), times, marker='o')
+    plt.title('Futási idő grafikon')
+    plt.xlabel('Fa indexe')
+    plt.ylabel('Futási idő (sec)')
+    plt.show()
 
 
 def main():
@@ -97,6 +124,8 @@ def main():
     # Eredmény és futási idő kiírása
     print(f"A maximálisan elérhető nyereség: {max_profit}")
     print(f"Futási idő: {elapsed_time:.9f} sec")
+
+    time_plot()
 
     # Futási idő grafikon
     plt.plot(times)

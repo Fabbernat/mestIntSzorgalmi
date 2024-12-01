@@ -6,3 +6,4 @@ Pythonban oldottam meg a szorgalmit.
 
 1 Node osztályból a teljes fa felépíthető.
 Plotolni lehet a futási időt a matplotlib beépített python libraryval.
+
