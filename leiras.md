@@ -1,7 +1,7 @@
 # Mesterséges intelligencia, szorgalmi feladat
 
-# 1 Követelmények
-A félév során le lehet implementálni bármely programozási nyelven a MIN-MAX vagy ALFA-BETA
+## 1 Követelmények
+A félév során le lehet implementálni bármely programozási nyelven a **MIN-MAX** vagy **ALFA-BETA**
 algoritmusok egyikét. A program nem kell GUI-val rendelkezzen. Minimum követelmény, hogy
 tetszőleges inputtal, parancssorból indítható legyen. Az algoritmus helyes implementálásával 4 pont
 szerezhető. Ez a plusz pont a kettes érdemjegybe nem számít bele, viszont feljebb igen. A kiszh-k és
@@ -97,5 +97,4 @@ def MinErtek(n, alfa, beta):
         beta = min(min, beta)
 
     return min
-
 ```
