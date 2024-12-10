@@ -1,4 +1,5 @@
 import time
+import math
 
 
 class Node:
@@ -11,7 +12,7 @@ def build_tree(values):
     nodes = []
     for value in values:
         if value == "x":
-            nodes.append(Node(value))
+            nodes.append(None)  # Az 'x' értékű csomópontokat None-ként kezeljük
         elif value == ".":
             nodes.append(None)
         else:
@@ -22,77 +23,57 @@ def build_tree(values):
         if nodes[i] is not None:
             for j in range(1, 4):
                 child_index = i * 3 + j
-                if child_index < len(nodes):
-                    if nodes[child_index] is not None:
-                        nodes[i].children.append(nodes[child_index])
+                if child_index < len(nodes) and nodes[child_index] is not None:
+                    nodes[i].children.append(nodes[child_index])
 
     return nodes[0]  # A gyökér visszaadása
 
 
-def min_max(node):
-    """
-    A Min-Max algoritmus implementációja.
-    """
+def min_value(node):
+    """MIN lépés."""
     if not node.children:
-        return node.value
-    elif node.value == 'x':  # MAX csúcs
-        return max(min_max(child) for child in node.children)
-    else:  # MIN csúcs
-        return min(min_max(child) for child in node.children)
+        return int(node.value)
 
-def alfa_beta(node, alfa, beta):
-    """
-    Az Alfa-Beta vágás algoritmus implementációja.
-    """
+    min_val = math.inf
+    for child in node.children:
+        min_val = min(min_val, max_value(child))
+    return min_val
+
+
+def max_value(node):
+    """MAX lépés."""
+    if node is None:
+        return 3
     if not node.children:
-        return node.value
-    elif node.value == 'x':  # MAX csúcs
-        max_ertek = float('-inf')
-        for child in node.children:
-            max_ertek = max(max_ertek, alfa_beta(child, alfa, beta))
-            if max_ertek >= beta:
-                return max_ertek
-            alfa = max(alfa, max_ertek)
-        return max_ertek
-    else:  # MIN csúcs
-        min_ertek = float('inf')
-        for child in node.children:
-            min_ertek = min(min_ertek, alfa_beta(child, alfa, beta))
-            if alfa >= min_ertek:
-                return min_ertek
-            beta = min(beta, min_ertek)
-        return min_ertek
+        return int(node.value)
+
+    max_val = -math.inf
+    for child in node.children:
+        max_val = max(max_val, min_value(child))
+    return max_val
+
+
+def min_max_algorithm(root):
+    """MIN-MAX algoritmus futtatása a gyökér csúcstól kiindulva."""
+    return max_value(root)
+
 
 def main():
-    """
-    A program fő függvénye.
-    """
-    tree_str = input("Kérem adja meg a fát listaként ábrázolva: ")
-    tree_list = tree_str.split()
+    """A főprogram, amely fogadja a bemenetet és kiírja az eredményt."""
+    input_string = input("Kérem adja meg a fát listaként ábrázolva: ")
+    data = input_string.split()
 
-    # A fa felépítése
-    tree = build_tree(tree_list)
+    # Fa felépítése a bemenet alapján
+    root = build_tree(data)
 
-    # Min-Max algoritmus futtatása és idő mérése
+    # MIN-MAX algoritmus futtatása és időmérés
     start_time = time.time()
-    max_nyereség_minmax = min_max(tree)
+    result = min_max_algorithm(root)
     end_time = time.time()
-    futasi_ido_minmax = end_time - start_time
 
-    # Alfa-Beta vágás futtatása és idő mérése
-    start_time = time.time()
-    max_nyereség_alfabeta = alfa_beta(tree, float('-inf'), float('inf'))
-    end_time = time.time()
-    futasi_ido_alfabeta = end_time - start_time
+    print(f"A maximálisan elérhető nyereség: {result}")
+    print(f"Futási idő: {end_time - start_time:.9f} sec")
 
-    # Eredmények kiírása
-    print("\nMin-Max algoritmus:")
-    print(f"A maximálisan elérhető nyereség: {max_nyereség_minmax}")
-    print(f"Futási idő: {futasi_ido_minmax:.6f} sec")
-
-    print("\nAlfa-Beta vágás:")
-    print(f"A maximálisan elérhető nyereség: {max_nyereség_alfabeta}")
-    print(f"Futási idő: {futasi_ido_alfabeta:.6f} sec")
 
 if __name__ == "__main__":
     main()
