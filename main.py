@@ -29,7 +29,7 @@ class Node:
 
 
 def build_tree(values):
-    nodes = [Node(value) if value is not None else None for value in values]
+    nodes = [Node(value) if value is not None else None for value in values if values is not None]
     for i in range(len(values)):
         if nodes[i] is not None:  # Csak nem üres csucsokhoz adunk gyereket
             for j in range(1, 4):  # Három gyerek
@@ -38,44 +38,26 @@ def build_tree(values):
                     nodes[i].add_child(nodes[child_index])
     return nodes[0]  # A gyökér csucsot adjuk vissza
 
-
-def alpha_beta(root, param, inf, param1):
-    pass
-
-
-# Min érték keresése
-# Min érték keresése
-def min_value(node):
+# Max érték keresése
+def max_value(node):
+    if node is None:
+        return -INF
     if not node.children:  # Levélcsúcs
         return node.value
 
     valid_children_values = [max_value(child) for child in node.children if child is not None and isinstance(child.value, (int, float))]
-    return min(valid_children_values) if valid_children_values else None
-    # Ha minden gyermek None, vagy None értékkel tér vissza, akkor None a visszatérési érték
-
-
-# Max érték keresése
-def max_value(node):
-    if not node.children:  # Levélcsúcs
-        return node.value
-
-    valid_children_values = [min_value(child) for child in node.children if child is not None and isinstance(child.value, (int, float))]
     return max(valid_children_values) if valid_children_values else None
-    # Ha minden gyermek None, vagy None értékkel tér vissza, akkor None a visszatérési érték
+    # Ha minden gyermek None, akkor None a visszatérési érték
 
 
 # Futási idő mérése és plottolása
-def time_plot():
+def time_plot(tree):
     # Példa fák
-    example_trees = [
-        [3, 5, 6, "x", "x", 1, 4],
-        [1, 2, 3, 4, 5, "x", "x", "x", "x", 6, 7],
-        [10, 20, "x", 30, 40, 50, "x", "x", "x", "x", 60, 70, 80],
-    ]
+
 
     times = []
 
-    for tree_values in example_trees:
+    for tree_values in tree:
         # Építsük meg a fát
         root = build_tree(tree_values)
 
@@ -109,19 +91,16 @@ def main():
         input_list[i] = input_list[i].strip()
 
     # Átalakítjuk az értékeket
-    # Ha nem tudja átparseolni int-té, akkor csak simán None-t adunk vissza, bár elvileg ilyen nem kéne hogy eloforduljon
-    values = [try_parse(x) if x not in ("x", ".") else None for x in input_list]
+    # Ha nem tudja átparseolni int-té, akkor csak simán None-t adunk vissza
+    values = [try_parse(x) if x not in ("x", ".", " ") else 'x' for x in input_list]
 
     # A kapott sztringbol felepıtjuk a fat a memoriaba
     built_tree = build_tree(values)
-    min_val = min_value(built_tree)
     max_val = max_value(built_tree)
 
-    print(f"A minimális érték: {min_val}")
-    print(f"A maximális érték: {max_val}")
 
     # Futási idő mérés és grafikon
-    time_plot()
+    time_plot(values)
 
 if __name__ == "__main__":
     main()

@@ -4,7 +4,7 @@
 A félév során le lehet implementálni bármely programozási nyelven a **MIN-MAX** vagy **ALFA-BETA**
 algoritmusok egyikét. A program nem kell GUI-val rendelkezzen. Minimum követelmény, hogy
 tetszőleges inputtal, parancssorból indítható legyen. Az algoritmus helyes implementálásával 4 pont
-szerezhető. Ez a plusz pont a kettes érdemjegybe nem számít bele, viszont feljebb igen. A kiszh-k és
+szerezhető. Ez a plusz pont a kettes érdemjegybe nem számít bele, viszont feljebb igen. A kis ZH-k és
 a szorgalmi pontjaival összesen egy jegyet lehet javítani.
 Az algoritmusok bővebb leírása a gyakorlati és az előadás jegyzetekben is megtalálható, valamint
 neten is sok anyag áll rendelkezésre. Az algoritmusok pszeudokódja a dokumentum végén látható.
@@ -68,7 +68,7 @@ legkevesebb pontot érné el. Miért? Mert a MAX játékosnak az a jó, ha miné
 jusson (maximalizálásra törekszik), tehát arra akarom rákényszeríteni, hogy minél kisebb hasznosságú
 csúcsot tudjon csak választani.
 
-# 4.2 ALFA-BETA 
+## 4.2 ALFA-BETA 
 ```python
 
 def MaxErtek(n, alfa, beta):
