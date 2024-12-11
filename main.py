@@ -13,9 +13,9 @@ def build_tree(values):
     nodes = []
     for value in values:
         if value == "x":
-            nodes.append(None)  # Az 'x' értékű csomópontokat None-ként kezeljük
+            nodes.append(Node(None))  # Az 'x' értékű csomópontokat None értékkel hozzuk létre
         elif value == ".":
-            nodes.append(None)
+            nodes.append(None)        # A '.' továbbra is üres csúcs marad
         else:
             nodes.append(Node(int(value)))
 
@@ -32,21 +32,26 @@ def build_tree(values):
 
 def minErtek(node):
     """MIN lépés."""
+    if node.value is None and not node.children:
+        return 0  # Alapértelmezett érték, ha a csúcs értéke None
+
     if not node.children:
-        return int(node.value) # a hasznossaga
+        return int(node.value)
 
     minErtek = math.inf
     for child in node.children:
         minErtek = min(minErtek, maxErtek(child))
     return minErtek
 
-
 def maxErtek(node):
     """MAX lépés."""
     if node is None:
-        return 3  # a hasznossaga
+        return 3  # Alapértelmezett hasznosság
+    if node.value is None and not node.children:
+        return 0  # Alapértelmezett érték, ha a csúcs értéke None
+
     if not node.children:
-        return int(node.value)  # a hasznossaga
+        return int(node.value)
 
     maxErtek = -math.inf
     for child in node.children:
