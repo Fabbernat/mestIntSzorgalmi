@@ -1,5 +1,6 @@
 import time
 import math
+import matplotlib.pyplot as plt
 
 
 class Node:
@@ -29,34 +30,68 @@ def build_tree(values):
     return nodes[0]  # A gyökér visszaadása
 
 
-def min_value(node):
+def minErtek(node):
     """MIN lépés."""
     if not node.children:
-        return int(node.value)
+        return int(node.value) # a hasznossaga
 
-    min_val = math.inf
+    minErtek = math.inf
     for child in node.children:
-        min_val = min(min_val, max_value(child))
-    return min_val
+        minErtek = min(minErtek, maxErtek(child))
+    return minErtek
 
 
-def max_value(node):
+def maxErtek(node):
     """MAX lépés."""
     if node is None:
-        return 3
+        return 3  # a hasznossaga
     if not node.children:
-        return int(node.value)
+        return int(node.value)  # a hasznossaga
 
-    max_val = -math.inf
+    maxErtek = -math.inf
     for child in node.children:
-        max_val = max(max_val, min_value(child))
-    return max_val
+        maxErtek = max(maxErtek, minErtek(child))
+    return maxErtek
 
 
 def min_max_algorithm(root):
     """MIN-MAX algoritmus futtatása a gyökér csúcstól kiindulva."""
-    return max_value(root)
+    return maxErtek(root)
 
+
+def time_plot(data):
+    """Futási idő plotolása különböző bemenetekre."""
+    roots = []
+    times = []
+
+    # Építsünk több fát a bemenetből, különböző részletekkel
+    for i in range(1, len(data) + 1):
+        partial_data = data[:i]
+        root = build_tree(partial_data)
+        roots.append(root)
+
+    # Mérjük a futási időket minden fára
+    for root in roots:
+        start_time = time.time()
+        max_profit = maxErtek(root)
+        elapsed_time = time.time() - start_time
+        times.append(elapsed_time)
+
+    # Plot készítése
+    plt.plot(range(1, len(times) + 1), times, marker='o', linestyle='-')
+    plt.title('Futási idő különböző méretű fákra')
+    plt.xlabel('Bemeneti adatok száma')
+    plt.ylabel('Futási idő (másodperc)')
+    plt.grid(True)
+    plt.show()
+
+def print_tree(node, depth=0):
+    """Rekurzívan kiírja a fát szintek szerint."""
+    if node is None:
+        return
+    print("  " * depth + str(node.value))
+    for child in node.children:
+        print_tree(child, depth + 1)
 
 def main():
     """A főprogram, amely fogadja a bemenetet és kiírja az eredményt."""
@@ -66,13 +101,18 @@ def main():
     # Fa felépítése a bemenet alapján
     root = build_tree(data)
 
+    print('\nA teljes fa kiírva szintek szerint:')
+    print_tree(root)
+    print()
     # MIN-MAX algoritmus futtatása és időmérés
     start_time = time.time()
     result = min_max_algorithm(root)
     end_time = time.time()
 
     print(f"A maximálisan elérhető nyereség: {result}")
-    print(f"Futási idő: {end_time - start_time:.9f} sec")
+    print(f"Futási idő: {end_time - start_time:.18f} sec") # a 9f szinte mindig csak 0-kból állt, a 18f informatívabb
+
+    time_plot(data)
 
 
 if __name__ == "__main__":

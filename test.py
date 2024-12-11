@@ -1,6 +1,6 @@
 import unittest
 import time
-from main import build_tree, max_value, hasznossag
+from main import build_tree, maxErtek, hasznossag
 from io import StringIO
 from main import main
 
