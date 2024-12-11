@@ -86,7 +86,7 @@ def time_plot(data):
     plt.show()
 
 def print_tree(node, depth=0):
-    """Rekurzívan kiírja a fát szintek szerint."""
+    """Rekurzívan kiírja a megadott fát szintek szerint."""
     if node is None:
         return
     print("  " * depth + str(node.value))
@@ -101,7 +101,7 @@ def main():
     # Fa felépítése a bemenet alapján
     root = build_tree(data)
 
-    print('\nA teljes fa kiírva szintek szerint:')
+    print('\nA teljes megadott fa kiírva szintek szerint:')
     print_tree(root)
     print()
     # MIN-MAX algoritmus futtatása és időmérés
